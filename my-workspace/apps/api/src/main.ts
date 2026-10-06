@@ -26,8 +26,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   app.use('/reference', apiReference({ content: document }));
 
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
+  await app.listen(process.env.PORT || 3000);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
   );

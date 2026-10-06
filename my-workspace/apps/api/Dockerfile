@@ -11,7 +11,7 @@ RUN npm ci --ignore-scripts
 COPY . .
 
 # Build the api app with the oxc toolchain (tsdown) and prune the lockfile.
-# The prune target depends on build, so this produces main.cjs plus a pruned
+# The prune target depends on build, so this produces main.mjs plus a pruned
 # package.json + package-lock.json + workspace_modules in the output directory.
 RUN npx nx run api:prune --configuration=production
 
@@ -32,4 +32,4 @@ COPY --from=builder /app/dist/apps/api ./
 
 EXPOSE 3000
 
-CMD ["node", "main.cjs"]
+CMD ["node", "main.mjs"]

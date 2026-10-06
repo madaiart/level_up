@@ -60,7 +60,7 @@
         "cwd": "apps/api",
         "commands": [
           "tsdown --watch --no-clean",
-          "node --watch ../../dist/apps/api/main.cjs"
+          "node --watch ../../dist/apps/api/main.mjs"
         ],
         "env": {
           "NODE_ENV": "development"

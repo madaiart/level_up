@@ -43,7 +43,7 @@ Endpoints available out of the box:
 npx nx run api:build
 ```
 
-This runs tsdown (the oxc toolchain) via Nx and emits `dist/apps/api/main.cjs`. Run it directly with `node dist/apps/api/main.cjs`.
+This runs tsdown (the oxc toolchain) via Nx and emits `dist/apps/api/main.mjs`. Run it directly with `node dist/apps/api/main.mjs`.
 
 ### Run all builds
 

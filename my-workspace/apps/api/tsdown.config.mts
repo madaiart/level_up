@@ -11,8 +11,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 // (required for Nest DI and route reflection) are honored by the oxc transform.
 export default defineConfig({
   entry: [join(here, 'src/main.ts')],
-  // CommonJS output keeps parity with the previous webpack build and Nest's defaults.
-  format: ['cjs'],
+  // ESM output; Nest's CommonJS packages are loaded through Node's CJS interop.
+  format: ['esm'],
   platform: 'node',
   target: 'node22',
   outDir: join(here, '../../dist/apps/api'),
