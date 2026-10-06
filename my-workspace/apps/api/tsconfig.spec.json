@@ -6,9 +6,5 @@
     "moduleResolution": "bundler",
     "types": ["node"]
   },
-  "include": [
-    "vitest.config.mts",
-    "src/**/__tests__/**/*.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["vitest.config.mts", "src/**/__tests__/**/*.ts", "src/**/*.d.ts"]
 }

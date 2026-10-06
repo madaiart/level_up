@@ -1,0 +1,9 @@
+# Git runs hooks from the repo root; the Nx workspace lives in my-workspace/.
+cd my-workspace
+
+# GUI/editor git clients may not load the shell profile, so fall back to nvm's Node.
+if ! command -v node >/dev/null 2>&1 && [ -s "$HOME/.nvm/nvm.sh" ]; then
+  . "$HOME/.nvm/nvm.sh"
+fi
+
+pnpm exec lint-staged

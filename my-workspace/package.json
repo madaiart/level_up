@@ -2,7 +2,9 @@
   "name": "@nestjs-template/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prepare": "cd .. && husky my-workspace/.husky"
+  },
   "private": true,
   "type": "module",
   "dependencies": {
@@ -32,7 +34,9 @@
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
+    "husky": "^9.1.7",
     "jsonc-eslint-parser": "^2.1.0",
+    "lint-staged": "^17.6.0",
     "nx": "23.2.0",
     "prettier": "~3.6.2",
     "tsdown": "^0.22.3",
