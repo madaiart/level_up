@@ -9,12 +9,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import type {
-  CreateTodoDto,
-  Todo,
-  TodoListResponse,
-  UpdateTodoDto,
-} from '@nestjs-template/types';
+import { StandardSchemaValidationPipe } from '../common/pipes/standard-schema-validation.pipe';
+import { type CreateTodoDto, createTodoSchema } from './dto/create-todo.dto';
+import { type UpdateTodoDto, updateTodoSchema } from './dto/update-todo.dto';
+import type { Todo, TodoListResponse } from './interfaces/todo.interface';
 import { TodosService } from './todos.service';
 
 @Controller('todos')
@@ -32,14 +30,18 @@ export class TodosController {
   }
 
   @Post()
-  create(@Body() dto: CreateTodoDto): Todo {
+  create(
+    @Body(new StandardSchemaValidationPipe(createTodoSchema))
+    dto: CreateTodoDto,
+  ): Todo {
     return this.todosService.create(dto);
   }
 
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateTodoDto,
+    @Body(new StandardSchemaValidationPipe(updateTodoSchema))
+    dto: UpdateTodoDto,
   ): Todo {
     return this.todosService.update(id, dto);
   }

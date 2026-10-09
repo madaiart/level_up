@@ -23,6 +23,9 @@ importers:
       '@scalar/nestjs-api-reference':
         specifier: ^1.2.26
         version: 1.2.26
+      '@standard-schema/spec':
+        specifier: ^1.1.0
+        version: 1.1.0
       axios:
         specifier: ^1.6.0
         version: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -32,6 +35,9 @@ importers:
       rxjs:
         specifier: ^7.8.0
         version: 7.8.2
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
     devDependencies:
       '@eslint/js':
         specifier: ^9.8.0

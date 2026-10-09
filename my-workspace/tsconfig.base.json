@@ -17,6 +17,7 @@
       "@nestjs-template/types": ["./packages/types/src/index.ts"]
     },
     "strict": false,
+    "strictNullChecks": true,
     "noUncheckedSideEffectImports": false,
     "types": ["*"],
     "esModuleInterop": false,

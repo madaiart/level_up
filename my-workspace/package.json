@@ -13,9 +13,11 @@
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/swagger": "^12.0.2",
     "@scalar/nestjs-api-reference": "^1.2.26",
+    "@standard-schema/spec": "^1.1.0",
     "axios": "^1.6.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
