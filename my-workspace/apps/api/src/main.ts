@@ -6,7 +6,7 @@
 // reflect-metadata must load before any decorated class so Nest can read
 // the metadata emitted by emitDecoratorMetadata (DI + route reflection).
 import 'reflect-metadata';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';

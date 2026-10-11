@@ -3,11 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { TodosModule } from './todos/todos.module';
+import { UserModule } from './user/user.module';
+
 import { ConfigModule } from '@nestjs/config';
 import { z } from 'zod';
 
 @Module({
   imports: [
+    UserModule,
     HealthModule,
     TodosModule,
     ConfigModule.forRoot({
