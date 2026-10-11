@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "cd .. && husky my-workspace/.husky"
+    "prepare": "cd .. && husky my-workspace/.husky",
+    "lint": "nx run-many -t lint",
+    "lint:fix": "nx run-many -t lint -- --fix"
   },
   "private": true,
   "type": "module",

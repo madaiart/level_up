@@ -21,6 +21,7 @@ async function bootstrap() {
   );
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  app.useGlobalPipes(new ValidationPipe()); //endpoint protected from invalid data
   // app.set('query parser', 'extended')
 
   // Generate the OpenAPI document from the controllers and serve it with Scalar.
