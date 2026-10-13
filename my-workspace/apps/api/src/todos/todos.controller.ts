@@ -10,9 +10,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { StandardSchemaValidationPipe } from '../common/pipes/standard-schema-validation.pipe';
-import { type CreateTodoDto, createTodoSchema } from './dto/create-todo.dto';
-import { type UpdateTodoDto, updateTodoSchema } from './dto/update-todo.dto';
-import type { Todo, TodoListResponse } from './interfaces/todo.interface';
+import {
+  type CreateTodoDto,
+  createTodoSchema,
+  type Todo,
+  type TodoListResponse,
+  type UpdateTodoDto,
+  updateTodoSchema,
+} from '@nestjs-template/utils';
 import { TodosService } from './todos.service';
 
 @Controller('todos')

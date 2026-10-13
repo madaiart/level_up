@@ -21,8 +21,8 @@ export default defineConfig({
   clean: true,
   // node_modules deps are externalized by default; nothing to inline for a Nest server.
   dts: false,
-  // Resolve the workspace type alias so the shared types lib is consumed during the build.
+  // Resolve the workspace alias so the shared types lib is consumed during the build.
   alias: {
-    '@nestjs-template/types': join(here, '../../packages/types/src/index.ts'),
+    '@nestjs-template/utils': join(here, '../../packages/utils/src/index.ts'),
   },
 });

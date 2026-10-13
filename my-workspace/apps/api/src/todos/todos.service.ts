@@ -1,7 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { CreateTodoDto } from './dto/create-todo.dto';
-import type { UpdateTodoDto } from './dto/update-todo.dto';
-import type { Todo, TodoListResponse } from './interfaces/todo.interface';
+import type {
+  CreateTodoDto,
+  Todo,
+  TodoListResponse,
+  UpdateTodoDto,
+} from '@nestjs-template/utils';
 
 @Injectable()
 export class TodosService {

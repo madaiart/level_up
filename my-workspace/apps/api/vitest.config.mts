@@ -18,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@nestjs-template/types': join(here, '../../packages/types/src/index.ts'),
+      '@nestjs-template/utils': join(here, '../../packages/utils/src/index.ts'),
     },
   },
   test: {

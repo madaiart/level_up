@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import type { HealthResponse } from './interfaces/health-response.interface';
+import type { HealthResponse } from '@nestjs-template/utils';
 
 @Controller('health')
 export class HealthController {
