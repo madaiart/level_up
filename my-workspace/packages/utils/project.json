@@ -14,6 +14,14 @@
         "tsConfig": "packages/utils/tsconfig.lib.json",
         "assets": ["packages/utils/*.md"]
       }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "command": "vp lint",
+        "cwd": "packages/utils"
+      }
     }
   }
 }

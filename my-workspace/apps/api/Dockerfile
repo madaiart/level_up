@@ -19,13 +19,13 @@ ENV NX_NO_CLOUD=true
 
 # Copy lockfile and manifests first for layer caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-# --ignore-scripts skips the husky "prepare" hook (no .git in the image)
+# --ignore-scripts skips the "prepare" hook (vp config installs git hooks) (no .git in the image)
 RUN pnpm ci --ignore-scripts
 
 # Copy source
 COPY . .
 
-# Build the api app with the oxc toolchain (tsdown) and prune the lockfile.
+# Build the api app with Vite+ (vp pack, i.e. tsdown) and prune the lockfile.
 # The prune target depends on build, so this produces main.mjs plus a pruned
 # package.json + pnpm-lock.yaml + workspace_modules in the output directory.
 RUN pnpm nx run api:prune --configuration=production

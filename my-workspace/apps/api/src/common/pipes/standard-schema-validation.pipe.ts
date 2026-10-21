@@ -10,9 +10,9 @@ import type { StandardSchemaV1 } from '@standard-schema/spec';
  * (Zod, Valibot, ArkType, ...) and returns the parsed output.
  */
 @Injectable()
-export class StandardSchemaValidationPipe<T extends StandardSchemaV1>
-  implements PipeTransform<unknown, Promise<StandardSchemaV1.InferOutput<T>>>
-{
+export class StandardSchemaValidationPipe<
+  T extends StandardSchemaV1,
+> implements PipeTransform<unknown, Promise<StandardSchemaV1.InferOutput<T>>> {
   constructor(private readonly schema: T) {}
 
   async transform(value: unknown): Promise<StandardSchemaV1.InferOutput<T>> {

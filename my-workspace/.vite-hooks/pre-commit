@@ -6,4 +6,4 @@ if ! command -v node >/dev/null 2>&1 && [ -s "$HOME/.nvm/nvm.sh" ]; then
   . "$HOME/.nvm/nvm.sh"
 fi
 
-pnpm exec lint-staged
+pnpm exec vp staged

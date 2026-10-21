@@ -4,7 +4,7 @@
 
 A production-ready NestJS REST API starter powered by Nx - built for teams who want a solid monorepo foundation with shared types, module boundaries, and Docker support from day one.
 
-The API builds with the oxc toolchain (tsdown, powered by rolldown + the oxc transformer), orchestrated by Nx. tsdown reads `apps/api/tsconfig.app.json`, so `experimentalDecorators` and `emitDecoratorMetadata` are honored - NestJS dependency injection and route reflection keep working with `reflect-metadata`.
+Tooling is [Vite+](https://viteplus.dev) (`vp`), orchestrated by Nx: `vp pack` (tsdown: rolldown + the oxc transformer) builds the API, `vp test` (Vitest 5) runs tests, `vp lint` (Oxlint, type-aware) lints and type-checks, `vp fmt` (Oxfmt) formats, and `vp staged` runs the pre-commit checks. All config lives in `vite.config.ts` files. tsdown reads `apps/api/tsconfig.app.json`, so `experimentalDecorators` and `emitDecoratorMetadata` are honored - NestJS dependency injection and route reflection keep working with `reflect-metadata`.
 
 ## Finish your Nx platform setup
 
@@ -64,7 +64,7 @@ Endpoints:
 pnpm nx run api:build
 ```
 
-This runs tsdown (the oxc toolchain) via Nx and emits `dist/apps/api/main.mjs`. Run it directly with `node dist/apps/api/main.mjs`.
+This runs `vp pack` (tsdown) via Nx and emits `dist/apps/api/main.mjs`. Run it directly with `node dist/apps/api/main.mjs`.
 
 ### Run all builds
 
@@ -78,11 +78,18 @@ pnpm nx run-many -t build
 pnpm nx run-many -t test
 ```
 
-### Lint
+### Lint, format, type-check
 
 ```sh
-pnpm nx run-many -t lint
+pnpm nx run-many -t lint   # vp lint per project (Oxlint + type check), cached by Nx
+pnpm check                 # vp check: format check + lint + type check for the whole workspace
+pnpm check:fix             # same, but formats and applies lint autofixes
+pnpm format                # vp fmt (Oxfmt) only
 ```
+
+The pre-commit hook (`.vite-hooks/pre-commit`) runs `vp staged`, which runs `vp check --fix` on staged files (the `staged` block in the root `vite.config.ts`). `pnpm install` installs the hook through the `prepare` script (`vp config`).
+
+**VS Code:** install the recommended _Vite Plus Extension Pack_ (Oxc + Vitest). `.vscode/settings.json` makes Oxc the formatter and fixes on save.
 
 ### Visualize the project graph
 
@@ -96,11 +103,13 @@ pnpm nx graph
 
 ```
 my-workspace/
+|- vite.config.ts              # Vite+ root config: lint (Oxlint), fmt (Oxfmt), staged (pre-commit)
+|- .vite-hooks/pre-commit      # Runs `vp staged`
 |- docker-compose.yml          # Local Postgres 18 (health-checked, data in a named volume)
 |- .env.example                # Template for .env (copy it; .env is gitignored)
 |- apps/
-|  |- api/                     # NestJS application (oxc/tsdown build orchestrated by Nx)
-|     |- tsdown.config.mts     # Build config (decorators + metadata, bundles @nestjs-template/utils)
+|  |- api/                     # NestJS application (vp pack build orchestrated by Nx)
+|     |- vite.config.ts        # pack (build: decorators + metadata, bundles @nestjs-template/utils) + test config
 |     |- db/
 |     |  |- migrations/        # dbmate migrations: plain SQL with -- migrate:up / -- migrate:down (commit these)
 |     |  |- schema.sql         # Full schema snapshot from `db:dump` (commit it; review it in diffs)
@@ -131,7 +140,7 @@ my-workspace/
 | api     | scope:api, type:app    | scope:shared  |
 | utils   | scope:shared, type:lib | scope:shared  |
 
-`@nx/enforce-module-boundaries` is configured in `eslint.config.mjs` so violations are caught at lint time, not at runtime.
+`@nx/enforce-module-boundaries` runs inside Oxlint as a JS plugin (`jsPlugins: ['@nx/eslint-plugin']` in the root `vite.config.ts`), so violations are caught at lint time, not at runtime.
 
 ---
 
@@ -170,7 +179,7 @@ pnpm nx g @nx/nest:resource --project=api --name=users
 
 ### Module Boundaries
 
-Enforce architectural rules at lint time. A `scope:api` library can never accidentally import from another app - only from `scope:shared` libs. Configure the rules in `eslint.config.mjs`.
+Enforce architectural rules at lint time. A `scope:api` library can never accidentally import from another app - only from `scope:shared` libs. Configure the rules in the `lint` block of the root `vite.config.ts`.
 
 ### Database (PostgreSQL + raw SQL)
 
@@ -334,7 +343,7 @@ Rules:
 
 The `apps/api/Dockerfile` uses a multi-stage build:
 
-1. **builder** - installs pnpm, runs `pnpm ci`, builds with `nx run api:prune` (the tsdown build plus a pruned `package.json` + `pnpm-lock.yaml`), then runs `pnpm ci --prod` on the pruned output in `/prod`
+1. **builder** - installs pnpm, runs `pnpm ci`, builds with `nx run api:prune` (the `vp pack` build plus a pruned `package.json` + `pnpm-lock.yaml`), then runs `pnpm ci --prod` on the pruned output in `/prod`
 2. **runner** - Node 22 slim image with `main.mjs` and production `node_modules` only
 
 Notes on why the Dockerfile looks the way it does:
@@ -407,6 +416,15 @@ What has been built so far, and what's still open. Update this section as work l
   - `@nestjs/config` was imported but not installed, and was given a Zod schema as a Joi `validationSchema`.
   - The built `main.mjs` couldn't start because tsdown left `@nestjs-template/utils` external. It's now bundled: it was removed from `apps/api/package.json` dependencies, so tsdown inlines it through the alias. Nx still sees the dependency through imports.
   - The API crashed when Postgres restarted (unhandled `pg` pool `error` event). This went away with the switch to postgres.js, which reconnects on its own.
+- **Moved to Vite+ 1.3.0** (2026-10-21), keeping Nx as the task orchestrator:
+  - Ran `vp migrate`, then finished the parts it skips. `vite-plus` is pinned through the pnpm catalog in `pnpm-workspace.yaml` (Vite → `@voidzero-dev/vite-plus-core`, Vitest 5.0.5).
+  - **Lint:** ESLint → Oxlint (`vp lint`). The ESLint rules were converted into the root `vite.config.ts`, with type-aware linting and type checking on. `@nx/enforce-module-boundaries` still runs, loaded as an Oxlint JS plugin (verified: a `utils` → `api` import fails lint). Removed `eslint`, `typescript-eslint`, `@eslint/js`, `eslint-config-prettier`, `@nx/eslint`, `jsonc-eslint-parser` and every `eslint.config.mjs`. Lost: `@nx/dependency-checks` on `packages/utils/package.json` (Oxlint doesn't lint JSON).
+  - **Format:** Prettier → Oxfmt (`vp fmt`). `.prettierrc` / `.prettierignore` moved into the `fmt` block. The Nx-generated agent folders (`.agents`, `.claude`, `.github/skills`, ...) are ignored.
+  - **Build:** `apps/api/tsdown.config.mts` → `pack` block in `apps/api/vite.config.ts`; `api:build` / `api:serve` run `vp pack`. Kept `deps.resolveDepSubpath: true` (tsdown <0.23 behavior) for now.
+  - **Tests:** `vitest.config.mts` → `test` block in each app's `vite.config.ts`; tests import from `vite-plus/test`. Removed the `@nx/vitest` plugin; `api:test` and `api-e2e:e2e` are explicit `vp test` targets. Dropped the Vitest v4 `clearMocks: false` shim (no tests use mocks).
+  - **Pre-commit:** husky + lint-staged → `vp staged` with the hook in `.vite-hooks/pre-commit` (`prepare` runs `vp config`). CI's format check is now `vp fmt --check`.
+  - `vp migrate` removed `esModuleInterop: false` from `tsconfig.base.json` (deprecated in TS 6). `main.ts` now calls `void bootstrap()` (new `no-floating-promises` warning).
+  - Verified: `nx run-many -t lint test build`, `vp check`, `nx run api:prune`, and the built `main.mjs` boots. The Docker image build was not re-run.
 
 ### Open / next steps
 

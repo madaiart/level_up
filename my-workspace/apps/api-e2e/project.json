@@ -8,7 +8,15 @@
       "executor": "nx:run-commands",
       "dependsOn": ["api:build", "api:serve"],
       "options": {
-        "command": "vitest run",
+        "command": "vp test",
+        "cwd": "apps/api-e2e"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "command": "vp lint",
         "cwd": "apps/api-e2e"
       }
     }

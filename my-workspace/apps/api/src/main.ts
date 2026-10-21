@@ -43,4 +43,4 @@ async function bootstrap() {
   Logger.log(`📚 API reference: http://localhost:${port}/reference`);
 }
 
-bootstrap();
+void bootstrap();

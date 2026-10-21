@@ -12,7 +12,7 @@
       "inputs": ["production", "^production"],
       "outputs": ["{workspaceRoot}/dist/apps/api"],
       "options": {
-        "command": "tsdown",
+        "command": "vp pack",
         "env": {
           "NODE_ENV": "production"
         },
@@ -59,7 +59,7 @@
       "options": {
         "cwd": "apps/api",
         "commands": [
-          "tsdown --watch --no-clean",
+          "vp pack --watch --no-clean",
           "node --watch ../../dist/apps/api/main.mjs"
         ],
         "env": {
@@ -80,8 +80,21 @@
       }
     },
     "test": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": ["default", "^production"],
+      "outputs": ["{workspaceRoot}/coverage/apps/api"],
       "options": {
-        "passWithNoTests": true
+        "command": "vp test",
+        "cwd": "apps/api"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "options": {
+        "command": "vp lint",
+        "cwd": "apps/api"
       }
     },
     "db:up": {

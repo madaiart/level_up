@@ -3,9 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "cd .. && husky my-workspace/.husky",
+    "prepare": "vp config --hooks-dir .vite-hooks --no-agent",
+    "check": "vp check",
+    "check:fix": "vp check --fix",
     "lint": "nx run-many -t lint",
-    "lint:fix": "nx run-many -t lint -- --fix"
+    "lint:fix": "vp lint --fix",
+    "format": "vp fmt",
+    "format:check": "vp fmt --check"
   },
   "private": true,
   "type": "module",
@@ -27,34 +31,23 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@eslint/js": "^9.8.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
-    "@nx/eslint": "23.2.0",
     "@nx/eslint-plugin": "23.2.0",
     "@nx/js": "23.2.0",
     "@nx/nest": "23.2.0",
     "@nx/node": "23.2.0",
-    "@nx/vitest": "23.2.0",
     "@nx/web": "23.2.0",
     "@nx/workspace": "23.2.0",
     "@swc/helpers": "~0.5.18",
     "@types/node": "^24.0.0",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "catalog:",
     "dbmate": "^2.36.0",
-    "eslint": "^9.8.0",
-    "eslint-config-prettier": "^10.0.0",
-    "husky": "^9.1.7",
-    "jsonc-eslint-parser": "^2.1.0",
-    "lint-staged": "^17.6.0",
     "nx": "23.2.0",
-    "prettier": "~3.6.2",
-    "tsdown": "^0.22.3",
     "tslib": "^2.3.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "^8.40.0",
-    "unrun": "^0.3.1",
-    "vite": "^8.3.2",
-    "vitest": "^4.1.11"
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
   }
 }
