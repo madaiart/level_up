@@ -5,14 +5,17 @@ import {
   Get,
   HttpCode,
   Param,
-  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { StandardSchemaValidationPipe } from '../common/pipes/standard-schema-validation.pipe';
 import {
   type CreateTodoDto,
   createTodoSchema,
+  type ListTodosQueryDto,
+  listTodosQuerySchema,
   type Todo,
   type TodoListResponse,
   type UpdateTodoDto,
@@ -25,12 +28,17 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
-  findAll(): TodoListResponse {
-    return this.todosService.findAll();
+  findAll(
+    @Query(new StandardSchemaValidationPipe(listTodosQuerySchema))
+    query: ListTodosQueryDto,
+  ): Promise<TodoListResponse> {
+    return this.todosService.findAll(query);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Todo {
+  findOne(
+    @Param('id', new ParseUUIDPipe({ version: '7' })) id: string,
+  ): Promise<Todo> {
     return this.todosService.findOne(id);
   }
 
@@ -38,22 +46,24 @@ export class TodosController {
   create(
     @Body(new StandardSchemaValidationPipe(createTodoSchema))
     dto: CreateTodoDto,
-  ): Todo {
+  ): Promise<Todo> {
     return this.todosService.create(dto);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', new ParseUUIDPipe({ version: '7' })) id: string,
     @Body(new StandardSchemaValidationPipe(updateTodoSchema))
     dto: UpdateTodoDto,
-  ): Todo {
+  ): Promise<Todo> {
     return this.todosService.update(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id', ParseIntPipe) id: number): void {
-    this.todosService.remove(id);
+  remove(
+    @Param('id', new ParseUUIDPipe({ version: '7' })) id: string,
+  ): Promise<void> {
+    return this.todosService.remove(id);
   }
 }

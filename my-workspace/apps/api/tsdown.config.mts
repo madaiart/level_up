@@ -21,7 +21,9 @@ export default defineConfig({
   clean: true,
   // node_modules deps are externalized by default; nothing to inline for a Nest server.
   dts: false,
-  // Resolve the workspace alias so the shared types lib is consumed during the build.
+  // Resolve the workspace alias so the shared utils lib is bundled into main.mjs.
+  // Don't list @nestjs-template/utils in apps/api/package.json: tsdown would
+  // externalize it and main.mjs would fail with ERR_MODULE_NOT_FOUND.
   alias: {
     '@nestjs-template/utils': join(here, '../../packages/utils/src/index.ts'),
   },

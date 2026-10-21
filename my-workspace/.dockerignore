@@ -1,6 +1,12 @@
 node_modules
 dist
 .git
-.nx/cache
+# All Nx local state. Copying .nx/workspace-data without .nx/cache makes Nx
+# report cache hits that restore nothing, leaving dist/ empty.
+.nx
 tmp
 *.log
+# Local secrets - pass config to the container with -e / --env-file instead
+.env
+.env.*
+!.env.example

@@ -3,3 +3,11 @@ export interface HealthResponse {
   timestamp: string;
   uptime: number;
 }
+
+export interface DbHealthResponse {
+  status: 'ok' | 'error';
+  timestamp: string;
+  database: 'up' | 'down';
+  latencyMs: number;
+  error?: string;
+}

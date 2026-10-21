@@ -19,6 +19,8 @@ async function bootstrap() {
     //   routeResolutionStrategy: 'specificity',
     // }
   );
+  // Lets DatabaseModule close the Postgres pool on SIGTERM/SIGINT.
+  app.enableShutdownHooks();
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe()); //endpoint protected from invalid data

@@ -1,5 +1,7 @@
+# pnpm 12 fails installs when a dependency's build script hasn't been approved or denied.
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@scarf/scarf': set this to true or false
-  nx: set this to true or false
-  unrs-resolver: set this to true or false
+  '@parcel/watcher': true # native file watcher (falls back to compiling if no prebuilt binary)
+  '@scarf/scarf': false # install telemetry only - not needed
+  esbuild: true # verifies its platform binary (used by Nx tooling)
+  nx: true # nx post-install setup
+  unrs-resolver: true # native resolver used by eslint-plugin-import tooling

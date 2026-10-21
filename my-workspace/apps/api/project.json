@@ -83,6 +83,55 @@
       "options": {
         "passWithNoTests": true
       }
+    },
+    "db:up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose up -d --wait postgres",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "db:down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose down",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "db:new": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "dbmate --migrations-dir ./db/migrations --schema-file ./db/schema.sql --no-dump-schema new {args.name}",
+        "cwd": "apps/api"
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "dbmate --migrations-dir ./db/migrations --schema-file ./db/schema.sql --no-dump-schema --wait migrate",
+        "cwd": "apps/api"
+      }
+    },
+    "db:rollback": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "dbmate --migrations-dir ./db/migrations --schema-file ./db/schema.sql --no-dump-schema rollback",
+        "cwd": "apps/api"
+      }
+    },
+    "db:status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "dbmate --migrations-dir ./db/migrations --schema-file ./db/schema.sql --no-dump-schema status",
+        "cwd": "apps/api"
+      }
+    },
+    "db:dump": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker compose exec -T postgres sh -c 'pg_dump --schema-only --no-owner --no-privileges --restrict-key=dbmate -U \"$POSTGRES_USER\" \"$POSTGRES_DB\"' > apps/api/db/schema.sql",
+        "cwd": "{workspaceRoot}"
+      }
     }
   }
 }

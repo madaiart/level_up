@@ -13,7 +13,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  findAll(): UserListResponse {
+  findAll(): Promise<UserListResponse> {
     return this.userService.findAll();
   }
 
@@ -21,7 +21,7 @@ export class UserController {
   add(
     @Body(new StandardSchemaValidationPipe(addUsersSchema))
     dto: AddUsersDto,
-  ): User[] {
+  ): Promise<User[]> {
     return this.userService.add(dto);
   }
 }
